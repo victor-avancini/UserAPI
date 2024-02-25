@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import { generateId, usersDatabase } from "../database/database";
-import { IUser } from "../interfaces/users.interfaces";
+import { UsersServices } from "../services/users.services";
 
 export class UsersControllers{
     createUser(req: Request, res: Response): Response {
-        const newUser: IUser = {id: generateId(), name: req.body.name, email: req.body.email};
+        const usersServices = new UsersServices();
 
-        usersDatabase.push(newUser)
+        const response = usersServices.createUser(req.body.name, req.body.email)
 
-        return res.status(201).json({ user: newUser, message: "Usuário cadastrado com sucesso."});
+        return res.status(201).json({ user: response, message: "Usuário cadastrado com sucesso."});
     }
 }
